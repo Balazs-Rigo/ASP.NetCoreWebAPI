@@ -1,0 +1,7 @@
+http://localhost:63304/api/NumberOfWorkingDays?date1=2021-02-02&date2=2021-03-03
+
+http://localhost:63304/api/NumberOfWeekendDays?date1=2021-02-02&date2=2021-03-03
+
+
+
+http://localhost:63304/api/dates?date=2021-02-08

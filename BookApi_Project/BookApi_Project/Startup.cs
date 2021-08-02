@@ -1,5 +1,7 @@
+using BookApi_Project.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,10 +27,11 @@ namespace BookApi_Project
             services.AddMvc();
 
             var connectionString = Configuration["connectionStrings:bookDbConnectionString"];
+            services.AddDbContext<BookDbContext>(c => c.UseSqlServer(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BookDbContext context)
         {
             if (env.IsDevelopment())
             {
@@ -39,6 +42,8 @@ namespace BookApi_Project
                 app.UseExceptionHandler("/Error");
             }
 
+           // context.SeedDataContext();
+
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -47,7 +52,10 @@ namespace BookApi_Project
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action}/{id?}"
+                    );
             });
         }
     }
